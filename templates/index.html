@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Manager - Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Personal Manager</h1>
+            <nav>
+                <a href="{{ url_for('index') }}">Inicio</a>
+            </nav>
+        </header>
+        
+        <main>
+            <section>
+                <h2>Gestión de Tareas</h2>
+                
+                <form action="{{ url_for('agregar') }}" method="POST" class="form-agregar">
+                    <input type="text" name="texto_tarea" placeholder="Escribe una nueva tarea..." required>
+                    <button type="submit">Agregar Tarea</button>
+                </form>
+                
+                <div class="lista-tareas">
+                    {% if tareas %}
+                        <h3>Mis Tareas</h3>
+                        <ul>
+                            {% for tarea in tareas %}
+                                <li class="{% if tarea.completada %}completada{% endif %}">
+                                    <span>{{ tarea.texto }}</span>
+                                    {% if not tarea.completada %}
+                                        <a href="{{ url_for('completar', id=tarea.id) }}" class="btn-completar">Completar</a>
+                                    {% else %}
+                                        <span class="estado">✓ Completada</span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="sin-tareas">No hay tareas. ¡Agrega una nueva!</p>
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 Personal Manager</p>
+        </footer>
+    </div>
+</body>
+</html>
+
